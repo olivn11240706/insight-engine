@@ -19,9 +19,10 @@ export default function InsightEngine() {
   const reportRef = useRef<HTMLDivElement>(null);
 
   const handleStartAnalysis = async () => {
-    if (!file && !url) return alert('请先上传文件或输入链接');
+    // 关键修复：确保有文件或 URL
+    if (!file && !url) return alert('请上传有效数据文件 (Excel/PDF) 或输入链接');
     setIsAnalyzing(true);
-    setReport(null);
+    setReport(null); // 清空旧报告
 
     try {
       const formData = new FormData();
@@ -31,6 +32,7 @@ export default function InsightEngine() {
         formData.append('url', url);
       }
 
+      // 注意：后端此时不处理文件内容，仅返回模拟 JSON 用于测试
       const response = await fetch('/api/analyze', {
         method: 'POST',
         body: formData,
@@ -43,10 +45,10 @@ export default function InsightEngine() {
         setPricesData(data.prices);
         setReport(data.summary);
       } else {
-        alert(data.error || '分析失败，请检查文件内容');
+        alert(data.error || '分析失败，请检查后端 API 配置');
       }
     } catch (e) {
-      alert('连接 AI 引擎失败，请检查网络或配置');
+      alert('无法连接分析引擎，请检查 API 路由设置');
     } finally {
       setIsAnalyzing(false);
     }
@@ -60,7 +62,7 @@ export default function InsightEngine() {
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
     pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    pdf.save(`洞察报告_${new Date().getTime()}.pdf`);
+    pdf.save(`诊断报告_${new Date().getTime()}.pdf`);
   };
 
   return (
@@ -91,6 +93,7 @@ export default function InsightEngine() {
                 id="file-upload" 
                 type="file" 
                 hidden 
+                // 关键修复：确保文件状态被正确设置
                 onChange={(e) => setFile(e.target.files?.[0] || null)} 
               />
               <p style={{ color: '#8E8E8E' }}>{file ? `已选: ${file.name}` : '点击这里上传文件 (Excel/PDF)'}</p>
@@ -102,14 +105,14 @@ export default function InsightEngine() {
             disabled={isAnalyzing}
             style={{ width: '100%', marginTop: '30px', padding: '18px', borderRadius: '20px', border: 'none', backgroundColor: '#BC8F8F', color: 'white', fontWeight: '600', cursor: 'pointer' }}
           >
-            {isAnalyzing ? 'AI 正在工笔细描...' : '启动深度诊断'}
+            {isAnalyzing ? 'AI 正在工笔细描...' : '启动诊断'}
           </button>
         </div>
 
         {report && (
           <div ref={reportRef} style={{ marginTop: '50px', background: 'white', borderRadius: '30px', padding: '50px', boxShadow: '0 30px 60px rgba(0,0,0,0.08)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '40px' }}>
-              <h2 style={{ color: '#4A4A4A' }}>{file?.name.includes('发饰') || file?.name.includes('衣') ? '风格维度分布' : '核心品类构成'}</h2>
+              <h2 style={{ color: '#4A4A4A' }}>诊断洞察报告</h2>
               <button onClick={downloadPDF} style={{ background: 'none', border: '1px solid #BC8F8F', color: '#BC8F8F', padding: '8px 15px', borderRadius: '10px', cursor: 'pointer' }}>
                 <Download size={16} style={{ marginRight: '5px' }} /> 导出 PDF
               </button>
@@ -135,7 +138,7 @@ export default function InsightEngine() {
 
             <div style={{ marginTop: '40px', padding: '30px', backgroundColor: '#FDFBF9', borderRadius: '20px', borderLeft: '4px solid #BC8F8F' }}>
               <h3 style={{ color: '#BC8F8F', marginBottom: '15px', display: 'flex', alignItems: 'center' }}>
-                <Sparkles size={18} style={{ marginRight: '8px' }} /> AI 深度洞察
+                <Sparkles size={18} style={{ marginRight: '8px' }} /> AI 深度总结
               </h3>
               <p style={{ lineHeight: '1.8', color: '#666', whiteSpace: 'pre-wrap' }}>{report}</p>
             </div>
