@@ -10,4 +10,4 @@ export default function Page() {
       {/* 暂时注释掉复杂的业务组件，先跑通路由 */}
     </div>
   );
-}
+} 
