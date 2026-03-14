@@ -95,16 +95,9 @@ export default function InsightEngine() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px', marginBottom: '40px' }}>
               {/* 各类元素占比 - 饼图 */}
               <div style={{ height: '300px', textAlign: 'center' }}>
-                <p style={{ color: '#8E8E8E', marginBottom: '20px' }}>核心元素占比分析</p>
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie data={mockData.elements} innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
-                      {mockData.elements.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
+              <p style={{ color: '#8E8E8E', marginBottom: '20px' }}>
+  {file?.name.includes('发饰') || file?.name.includes('衣') ? '风格维度分布' : '核心品类构成'}
+</p>
 
               {/* 价格区间占比 - 柱状图 */}
               <div style={{ height: '300px', textAlign: 'center' }}>
