@@ -179,4 +179,37 @@ export default function Page() {
 
           {/* 功能展示区 */}
           <div>
-            <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#
+            <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#334155', marginBottom: '24px' }}>核心功能 (Core Features)</h2>
+            <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+              <FunctionCard
+                icon="🔗"
+                title="竞品共性分析"
+                desc="自动化扫描同类目高销量产品，解码视觉风格、价格策略和描述文案的共同规律。"
+              />
+              <FunctionCard
+                icon="📊"
+                title="高销量解码"
+                desc="分析用户评论情感，识别被忽视的痛点，帮助您找到产品差异化的“情感爆点”。"
+              />
+              <FunctionCard
+                icon="💡"
+                title="改善建议生成"
+                desc="不提供泛泛的建议。AI 生成可立即执行的、带有“温度”的文案与UI优化策略。"
+              />
+            </div>
+          </div>
+
+        </GlassCard>
+
+        {/* 底部人文关怀 Footer */}
+        <div style={{ textAlign: 'center', marginTop: '64px', fontSize: '14px', color: '#94A3B8' }}>
+          <p className="breathe-animation" style={{ color: '#BC8F8F', fontWeight: '600', fontSize: '15px' }}>
+            我们相信，数据不应冰冷。每一个成功的品牌，都蕴含着对人性的关怀。
+          </p>
+          <p style={{ marginTop: '8px' }}>Insight Engine. All rights reserved. 2026</p>
+        </div>
+
+      </div>
+    </>
+  );
+}
