@@ -168,8 +168,12 @@ export default function Page() {
                   transition: 'background-color 0.3s ease, transform 0.2s ease',
                   boxShadow: '0 5px 15px -5px rgba(188, 143, 143, 0.4)',
                 }}
-                onMouseEnter={(e) => e.target.style.backgroundColor = '#A98080'}
-                onMouseLeave={(e) => e.target.style.backgroundColor = '#BC8F8F'}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.backgroundColor = '#A98080';
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.backgroundColor = '#BC8F8F';
+                }}
                 onClick={() => alert('AI 正在深度诊断中，请稍候...')}
               >
                 开始 AI 深度诊断
