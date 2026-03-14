@@ -1,18 +1,19 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-// ... 这里保留你所有的 import 语句 ...
+// 保持你之前的其他 import 语句，比如 Supabase 客户端等
 
-// 1. 确保函数名统一，并在定义时就导出
-export default function DashboardPage() {
-  // ... 这里粘贴你那 500 多行逻辑 ...
+export default function InsightEnginePage() {
+  // 粘贴你之前找回的那 500 多行核心业务逻辑代码
+  // 确保这里面不再包含另一个 "export default"
   
   return (
-    // ... 这里是你的 HTML/JSX 内容 ...
-    <div>内容内容...</div>
+    <main className="min-h-screen bg-stone-50">
+      {/* 这里粘贴你之前的 JSX 布局代码 */}
+      <div className="p-8 text-stone-800">
+        <h1>Insight Engine Ready</h1>
+        {/* ... 其余界面内容 ... */}
+      </div>
+    </main>
   );
 }
-
-// 2. 为了双重保险，在文件最底部再加一行
-// (如果上面已经写了 export default，这行加不加都行，但加上不报错)
-// export default DashboardPage;
