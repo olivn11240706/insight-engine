@@ -77,9 +77,23 @@ export default function Page() {
     }
   };
 
-  const handleStartAnalysis = () => {
+  const handleStartAnalysis = async () => {
     if (selectedFile) {
-      alert(`AI 正在深度分析文件: ${selectedFile.name}。我们将识别其中的数据共性...`);
+      // 模拟读取文件的过程
+      const reader = new FileReader();
+      
+      reader.onload = (e) => {
+        // 当文件读取成功后触发
+        alert(`读取成功！文件 "${selectedFile.name}" 共计 ${selectedFile.size} 字节。\n\n下一步：我们将把这些数据发送至 AI 引擎进行深度洞察。`);
+      };
+
+      reader.onerror = () => {
+        alert("文件读取失败，请重试。");
+      };
+
+      // 开始以二进制方式读取
+      reader.readAsArrayBuffer(selectedFile);
+      
     } else if (competitorUrl) {
       alert(`AI 正在分析链接: ${competitorUrl}...`);
     } else {
