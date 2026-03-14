@@ -1,4 +1,5 @@
 'use client';
+export const dynamic = 'force-dynamic'; // 强制动态渲染，防止静态生成出现 404
 
 import React, { useState, useEffect } from 'react';
 // 保持你之前的其他 import 语句，比如 Supabase 客户端等
