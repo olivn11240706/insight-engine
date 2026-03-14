@@ -1,0 +1,42 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+
+export async function POST(req: NextRequest) {
+  try {
+    const formData = await req.formData();
+    const file = formData.get('file') as File;
+    if (!file) return NextResponse.json({ error: '请上传有效文件' }, { status: 400 });
+
+    const bytes = await file.arrayBuffer();
+    const base64Data = Buffer.from(bytes).toString('base64');
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    const prompt = `
+      分析这份数据并严格返回 JSON 格式。
+      1. 识别行业（发饰/服装/IP衍生品等）。
+      2. 如果是服饰类按风格分类，如果是IP类按品类分类。
+      JSON 结构：
+      {
+        "elements": [{"name": "分类名", "value": 占比}],
+        "prices": [{"range": "价格段", "count": 数量}],
+        "summary": "分析报告正文"
+      }
+    `;
+
+    const result = await model.generateContent([
+      { inlineData: { data: base64Data, mimeType: file.type } },
+      { text: prompt }
+    ]);
+
+    const responseText = result.response.text();
+    // 关键修复：清洗 JSON 字符串
+    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+    const cleanJson = jsonMatch ? jsonMatch[0] : responseText;
+
+    return NextResponse.json(JSON.parse(cleanJson));
+  } catch (error: any) {
+    return NextResponse.json({ error: "AI 诊断中断，请确保已设置 GEMINI_API_KEY" }, { status: 500 });
+  }
+}
