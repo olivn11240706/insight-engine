@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 保持配置简洁，目前不需要额外的重定向，因为逻辑已经搬到首页了
+  // 确保这里没有任何 redirects 或者是 rewrites 的代码
 };
 
 export default nextConfig;
