@@ -46,12 +46,17 @@ const prompt = `
       { text: prompt }
     ]);
 
+    // --- 找到这部分并替换 ---
     const responseText = result.response.text();
-    // 提取 JSON 部分（防止 AI 偶尔带上 ```json 标签）
-    const cleanJson = responseText.replace(/```json|```/g, "").trim();
     
-    return NextResponse.json(JSON.parse(cleanJson));
-  } catch (error: any) {
-    return NextResponse.json({ error: "AI 思考过度，请重试" }, { status: 500 });
-  }
-}
+    // 核心修复：强行提取 JSON（清洗掉 AI 可能带出的额外字符）
+    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+    const cleanJson = jsonMatch ? jsonMatch[0] : responseText;
+    
+    try {
+      const parsedData = JSON.parse(cleanJson);
+      return NextResponse.json(parsedData);
+    } catch (parseError) {
+      console.error("JSON 解析失败:", responseText);
+      return NextResponse.json({ error: "数据格式不正确，请再试一次" }, { status: 500 });
+    }

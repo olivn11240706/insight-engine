@@ -30,27 +30,25 @@ export default function InsightEngine() {
   };
 
   const handleStartAnalysis = async () => {
-    if (!file && !url) return alert('请提供链接或上传文件');
+    if (!file && !url) return alert('请提供内容');
     setIsAnalyzing(true);
+    setReport(null); // 清空旧报告
+
     try {
       const formData = new FormData();
-      if (file) formData.append('file', file);
-      else formData.append('url', url);
-
-      const response = await fetch('/api/analyze', { method: 'POST', body: formData });
-      const data = await response.json();
-
-      if (data.elements) {
-        setElementsData(data.elements);
-        setPricesData(data.prices);
-        setReport(data.summary);
+      if (file) {
+        formData.append('file', file); // 👈 确保这里的 key 是 'file'，要和后端对应
+      } else {
+        formData.append('url', url);
       }
-    } catch (e) {
-      alert('分析遇到波折');
-    } finally {
-      setIsAnalyzing(false);
-    }
-  };
+
+      const response = await fetch('/api/analyze', { 
+        method: 'POST', 
+        body: formData // 👈 这里的 body 必须是 formData
+      });
+      
+      const data = await response.json();
+      // ... 后面设置数据的逻辑 ...
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#FDFBF9', padding: '40px' }}>
@@ -111,3 +109,15 @@ export default function InsightEngine() {
     </div>
   );
 }
+<input 
+  id="file-upload" 
+  type="file" 
+  hidden 
+  onChange={(e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFile(file); // 👈 必须有这一行，否则 AI 拿不到文件
+      console.log("文件已选择:", file.name); // 可以在控制台确认
+    }
+  }} 
+/>
