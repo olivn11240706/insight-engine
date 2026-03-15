@@ -181,7 +181,7 @@ export default function FreshAestheticPlatform() {
                         <Pie data={reportData.elements} innerRadius={85} outerRadius={125} paddingAngle={6} dataKey="value">
                           {reportData.elements.map((_: any, i: number) => <Cell key={i} fill={THEME_CHART_COLORS[i % THEME_CHART_COLORS.length]} stroke="none" />)}
                         </Pie>
-                        <Tooltip cornerRadius={10} />
+                        <Tooltip cursor={{ strokeDasharray: '3 3' }} contentStyle={{ borderRadius: '10px' }} />
                       </PieChart>
                     </ResponsiveContainer>
                   </div>
